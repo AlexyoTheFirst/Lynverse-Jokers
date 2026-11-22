@@ -1,0 +1,13 @@
+{
+	"id": "Lynverse",
+	"name": "Lynverse Jokers",
+	"author": ["Alexyo? (@alexyothefirst.com)"],
+	"description": "This pack features thirty brand-new jokers. There are many variations of Lyn Selensi, but there are some other characters too! Holly Valentine belongs to @kurzy.bsky.social and Faith belongs to @kaibyaku.newgrounds.com. Art and programming by me, Alex!",
+	"prefix": "lynverse",
+	"main_file": "Lynverse.lua",
+	"priority": 0,
+	"badge_colour": "0078D2",
+	"badge_text_colour": "A5D9FF",
+	"display_name": "Lynverse",
+	"version": "2.0.0",
+}
