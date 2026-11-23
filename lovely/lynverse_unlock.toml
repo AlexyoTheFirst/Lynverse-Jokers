@@ -1,0 +1,93 @@
+[manifest]
+version = "1.0.0"
+priority = 0
+
+# Troll Lyn
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:use_consumeable(area, copier)"
+position = "after"
+payload = '''
+if self.config.center.key == 'c_justice' and G.PROFILES and G.SETTINGS.profile then
+	local prof = G.PROFILES[G.SETTINGS.profile]
+	prof.trollyn_justice_used = (prof.trollyn_justice_used or 0) + 1
+	G:save_settings()
+	check_for_unlock({ type = 'trollyn_justice_used', count = prof.trollyn_justice_used })
+end
+'''
+match_indent = true
+
+# Future Lyn
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if center_table.name == 'Petroglyph' then"
+position = "after"
+payload = '''
+check_for_unlock({ type = 'future_lyn_petroglyph_redeemed' })
+'''
+match_indent = true
+
+# Goth Lyn
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.opening = true"
+position = "after"
+payload = '''
+if self.ability.name and self.ability.name:find('Spectral') then
+	G.GAME.spectral_packs_opened = (G.GAME.spectral_packs_opened or 0) + 1
+	check_for_unlock({ type = 'goth_lyn_spectral_packs_opened', count = G.GAME.spectral_packs_opened })
+end
+'''
+match_indent = true
+times = 1
+
+# Dream Lyn
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:use_consumeable(area, copier)"
+position = "after"
+payload = '''
+if self.config.center.key == 'c_fool' then
+	G.GAME.fools_used = (G.GAME.fools_used or 0) + 1
+	check_for_unlock({ type = 'dream_lyn_fools_used', count = G.GAME.fools_used})
+end
+'''
+match_indent = true
+
+# Selensi Beach
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.opening = true"
+position = "after"
+payload = '''
+G.GAME.booster_packs_opened = (G.GAME.booster_packs_opened or 0) + 1
+check_for_unlock({ type = 'selensi_beach_packs_opened', count = G.GAME.booster_packs_opened })
+'''
+match_indent = true
+times = 1
+
+# Neotiyeth
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.shattered = true"
+position = "after"
+payload = '''
+check_for_unlock({ type = 'neotiyeth_card_destroyed', destroyed_card = self })
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)"
+position = "after"
+payload = '''
+check_for_unlock({ type = 'neotiyeth_card_destroyed', destroyed_card = self })
+'''
+match_indent = true

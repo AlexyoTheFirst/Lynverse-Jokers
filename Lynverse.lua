@@ -12,33 +12,37 @@ SMODS.Atlas {
 }
 
 SMODS.ObjectType({
-    key = "lynverse_Lyns",
-    default = "j_lynverse_future_lyn",
-    cards = {
-        j_lynverse_fire_lyn = true,
-        j_lynverse_brick_lyn = true,
-        j_lynverse_graffiti_lyn = true,
-        j_lynverse_robo_lyn = true,
-        j_lynverse_mermaid_lyn = true,
-        j_lynverse_goblyn = true,
-        j_lynverse_cat_lyn = true,
-        j_lynverse_seal_lyn = true,
-        j_lynverse_adventurer_lyn = true,
-        j_lynverse_inklyn = true,
-        j_lynverse_badgirl_lyn = true,
-        j_lynverse_devil_lyn = true,
-        j_lynverse_troll_lyn = true,
-        j_lynverse_beatblock_lyn = true,
-        j_lynverse_future_lyn = true,
-        j_lynverse_merla = true,
-        j_lynverse_wax_lyn = true,
-        j_lynverse_scientist_lyn = true,
-        j_lynverse_goth_lyn = true,
-        j_lynverse_shark_lyn = true,
-        j_lynverse_selensi_beach = true,
-        j_lynverse_dj_lyn = true,
-    },
+	key = "lynverse_Lyns",
+	default = "j_lynverse_future_lyn",
+	cards = {
+		j_lynverse_fire_lyn = true,
+		j_lynverse_brick_lyn = true,
+		j_lynverse_graffiti_lyn = true,
+		j_lynverse_robo_lyn = true,
+		j_lynverse_mermaid_lyn = true,
+		j_lynverse_goblyn = true,
+		j_lynverse_cat_lyn = true,
+		j_lynverse_seal_lyn = true,
+		j_lynverse_adventurer_lyn = true,
+		j_lynverse_inklyn = true,
+		j_lynverse_badgirl_lyn = true,
+		j_lynverse_devil_lyn = true,
+		j_lynverse_troll_lyn = true,
+		j_lynverse_beatblock_lyn = true,
+		j_lynverse_future_lyn = true,
+		j_lynverse_merla = true,
+		j_lynverse_wax_lyn = true,
+		j_lynverse_scientist_lyn = true,
+		j_lynverse_goth_lyn = true,
+		j_lynverse_shark_lyn = true,
+		j_lynverse_selensi_beach = true,
+		j_lynverse_dj_lyn = true,
+		j_lynverse_dream_lyn = true,
+	},
 })
+SMODS.Attribute {
+	key = 'Lyn'
+}
 
 
 SMODS.Sound({
@@ -147,19 +151,19 @@ SMODS.Joker {
 		then
 			local other_card = context.other_card
 			G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-                    local suit_prefix = string.sub(other_card.base.suit, 1, 1)..'_'
-                    local rank_suffix = other_card.base.id == 2 and 14 or math.max(other_card.base.id-1, 2)
-                    if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
-                    elseif rank_suffix == 10 then rank_suffix = 'T'
-                    elseif rank_suffix == 11 then rank_suffix = 'J'
-                    elseif rank_suffix == 12 then rank_suffix = 'Q'
-                    elseif rank_suffix == 13 then rank_suffix = 'K'
-                    elseif rank_suffix == 14 then rank_suffix = 'A'
-                    end
-                    other_card:set_base(G.P_CARDS[suit_prefix..rank_suffix])
+					local suit_prefix = string.sub(other_card.base.suit, 1, 1)..'_'
+					local rank_suffix = other_card.base.id == 2 and 14 or math.max(other_card.base.id-1, 2)
+					if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
+					elseif rank_suffix == 10 then rank_suffix = 'T'
+					elseif rank_suffix == 11 then rank_suffix = 'J'
+					elseif rank_suffix == 12 then rank_suffix = 'Q'
+					elseif rank_suffix == 13 then rank_suffix = 'K'
+					elseif rank_suffix == 14 then rank_suffix = 'A'
+					end
+					other_card:set_base(G.P_CARDS[suit_prefix..rank_suffix])
 					other_card:juice_up()
 					play_sound('tarot1')
-                return true end }))
+				return true end }))
 			return {
 				mult = card.ability.extra.mult,
 				SMODS.calculate_effect({message = 'Downranked!', message_card = other_card}, card)
@@ -198,12 +202,18 @@ SMODS.Joker {
 		then
 			if context.card.area == G.jokers then
 				card.ability.extra.curr_mult = card.ability.extra.curr_mult + card.ability.extra.bonus_jkr
+				if card.ability.extra.curr_mult >= 30 then
+					check_for_unlock({ type = 'merla_MD_mult_reached' })
+				end
 				return {
 					message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.bonus_jkr } },
 					colour = G.C.MULT
 				}
 			elseif context.card.area == G.consumeables then
 				card.ability.extra.curr_mult = card.ability.extra.curr_mult + card.ability.extra.bonus_cnsm
+				if card.ability.extra.curr_mult >= 30 then
+					check_for_unlock({ type = 'merla_MD_mult_reached' })
+				end
 				return {
 					message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.bonus_cnsm } },
 					colour = G.C.MULT
@@ -233,6 +243,7 @@ SMODS.Joker {
 			"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = true,
@@ -295,6 +306,7 @@ SMODS.Joker {
 			"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = true,
@@ -341,6 +353,7 @@ SMODS.Joker {
 			"requirement by {C:attention}20%"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -358,14 +371,14 @@ SMODS.Joker {
 			not (context.blueprint_card or card).getting_sliced
 		then
 			G.E_MANAGER:add_event(Event({func = function()
-                G.E_MANAGER:add_event(Event({func = function()
+				G.E_MANAGER:add_event(Event({func = function()
 					G.GAME.blind.chips = G.GAME.blind.chips * 0.8
 					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 					play_sound('timpani')
-                    delay(0.4)
-                    return true end }))
+					delay(0.4)
+					return true end }))
 				card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = '-20%'})
-            return true end }))
+			return true end }))
 		end
 	end
 }
@@ -384,6 +397,7 @@ SMODS.Joker {
 			"{C:red}#4#",
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = true,
@@ -451,6 +465,7 @@ SMODS.Joker {
 			"{C:attention}hand"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -486,6 +501,7 @@ SMODS.Joker {
 			"{C:inactive}(Must have room)"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -510,6 +526,7 @@ SMODS.Joker {
 				end
 			end
 			if award_planet == true then
+				check_for_unlock({ type = 'shark_lyn_goblyn_create_planet' })
 				local card_type = 'Planet'
 				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 				G.E_MANAGER:add_event(Event({
@@ -543,11 +560,12 @@ SMODS.Joker {
 		name = 'Cat Lyn',
 		text = {
 			"{C:chips}+#1#{} Chips",
-            "{C:green}#2# in #3#{} chance this",
-            "card is destroyed",
-            "at end of round",
+			"{C:green}#2# in #3#{} chance this",
+			"card is destroyed",
+			"at end of round",
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -568,30 +586,30 @@ SMODS.Joker {
 			not context.blueprint
 		then
 			if SMODS.pseudorandom_probability(card, 'cat_lyn', card.ability.extra.num, card.ability.extra.denom, 'sleepchance') then 
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        play_sound('tarot1')
-                        card.T.r = -0.2
-                        card:juice_up(0.3, 0.4)
-                        card.states.drag.is = true
-                        card.children.center.pinch.x = true
-                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
-                            func = function()
-                                    G.jokers:remove_card(card)
-                                    card:remove()
-                                    card = nil
-                                return true; end})) 
-                        return true
-                    end
-                })) 
-                return {
-                    message = 'Asleep!'
-                }
-            else
-                return {
-                    message = 'Awake!'
-                }
-            end
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound('tarot1')
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, blockable = false,
+							func = function()
+									G.jokers:remove_card(card)
+									card:remove()
+									card = nil
+								return true; end})) 
+						return true
+					end
+				})) 
+				return {
+					message = 'Asleep!'
+				}
+			else
+				return {
+					message = 'Awake!'
+				}
+			end
 		end
 		if
 			context.joker_main
@@ -615,6 +633,7 @@ SMODS.Joker {
 			"{C:inactive}(Currently {C:mult}+#2#{C:inactive} Mult)",
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = true,
@@ -628,10 +647,13 @@ SMODS.Joker {
 	cost = 6,
 	update = function(self, card, dt)
 		if G.playing_cards ~= nil then
-            card.ability.extra.seal_count = 0
-            for k, v in pairs(G.playing_cards) do
-                if v.seal ~= nil then card.ability.extra.seal_count = card.ability.extra.seal_count + 1 end
-            end
+			card.ability.extra.seal_count = 0
+			for k, v in pairs(G.playing_cards) do
+				if v.seal ~= nil then card.ability.extra.seal_count = card.ability.extra.seal_count + 1 end
+			end
+			if card.ability.extra.seal_count >= 5 then
+				check_for_unlock({ type = 'wax_lyn_seal_lyn_mult_reached' })
+			end
 		end
 	end,
 	calculate = function(self, card, context)
@@ -656,6 +678,7 @@ SMODS.Joker {
 			"give {X:mult,C:white} X#1# {} Mult",
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -675,15 +698,15 @@ SMODS.Joker {
 		then
 			local other_joker = context.other_joker
 			G.E_MANAGER:add_event(Event({
-                    func = function()
-                        other_joker:juice_up(0.5, 0.5)
-                        return true
-                    end
-                })) 
-            return {
-					message_card = other_joker,
-                    Xmult = card.ability.extra.Xmult
-            }
+					func = function()
+						other_joker:juice_up(0.5, 0.5)
+						return true
+					end
+				})) 
+			return {
+				message_card = other_joker,
+				Xmult = card.ability.extra.Xmult
+			}
 		end
 	end
 }
@@ -694,10 +717,11 @@ SMODS.Joker {
 	loc_txt = {
 		name = 'Inklyn',
 		text = {
-            "Hand size can",
+			"Hand size can",
 			"never go below {C:attention}#1#",
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -751,6 +775,7 @@ SMODS.Joker {
 			"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chips)",
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -829,14 +854,21 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'devil_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Devil Lyn',
 		text = {
 			"Retrigger",
 			"{C:gold}Gold{} cards"
+		},
+		unlock = {
+			"Play a",
+			"{C:attention}Three of a Kind{}",
+			"of {C:attention}6{}s"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -848,6 +880,21 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 0, y = 3},
 	cost = 4,
+	check_for_unlock = function(self, args)
+		if args.type == 'hand' then
+			if args.handname == 'Three of a Kind' then
+				local sixes = 0
+				for k, v in ipairs(args.scoring_hand) do
+					if v:get_id() == 6 then
+						sixes = sixes + 1
+					end
+				end
+				if sixes == 3 then
+					return true
+				end
+			end
+		end
+	end,
 	calculate = function(self, card, context)
 		if
 			context.repetition and (context.cardarea == G.hand or context.cardarea == G.play) and context.other_card.ability.name == 'Gold Card'
@@ -861,7 +908,8 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'troll_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Troll Lyn',
 		text = {
@@ -869,8 +917,13 @@ SMODS.Joker {
 			"{C:attention}equal{} number of {C:spades}Black",
 			"and {C:hearts}Red{} cards,",
 			"balance {C:chips}Chips{} and {C:mult}Mult"
+		},
+		unlock = {
+			"Use {C:tarot}Justice{} {C:attention}#1#{} times",
+			"{C:inactive}(#2#/#1#){}"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = false,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -878,10 +931,22 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		return { vars = {  } }
 	end,
+	locked_loc_vars = function(self, info_queue, card)
+		local current = 0
+		if G.PROFILES and G.SETTINGS.profile then
+			current = G.PROFILES[G.SETTINGS.profile].trollyn_justice_used or 0
+		end
+		return { vars = { 12, math.min(current, 12) } }
+	end,
 	rarity = 2,
 	atlas = 'LynverseJokers',
 	pos = { x = 1, y = 3},
 	cost = 7,
+	check_for_unlock = function(self, args)
+		if args.type == "trollyn_justice_used" and args.count >= 12 then
+			return true
+		end
+	end,
 	calculate = function(self, card, context)
 		if
 			context.joker_main and
@@ -908,17 +973,25 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'beatblock_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
-		name = 'Beat Twin Lyns',
+		name = 'Beat Lyn',
 		text = {
 			"{C:chips}When blue:",
 			"{C:spades}Black{C:chips} cards give +#1# Chips",
 			"{C:mult}When red:",
 			"{C:hearts}Red{C:mult} cards give +#2# Mult",
 			"{C:inactive}(Swaps when activated)"
+		},
+		unlock = {
+			"Play a 5 card hand",
+			"of alternating {C:spades}Black{}",
+			"and {C:hearts}Red{} cards",
+			"{C:red,E:2}No Wild Cards{}"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -934,6 +1007,37 @@ SMODS.Joker {
 		if card.ability ~= nil then
 			if card.ability.extra.bonus == 'Red' then
 				card.children.center:set_sprite_pos({ x = 1, y = 0 })
+			end
+		end
+	end,
+	check_for_unlock = function(self, args)
+		if args.type == 'hand' then
+			if #args.scoring_hand == 5 then
+				local prev_color = 0
+				-- 1 is black, 2 is red, 0 is starter
+				local alternating = true
+				for k, v in ipairs(args.scoring_hand) do
+					if v.ability.name == 'Wild Card' then
+						alternating = false
+					elseif v:is_suit("Hearts") or v:is_suit("Diamonds") then
+						if prev_color == 0 or prev_color == 1 then
+							prev_color = 2
+						else
+							alternating = false
+						end
+					elseif v:is_suit("Spades") or v:is_suit("Clubs") then
+						if prev_color == 0 or prev_color == 2 then
+							prev_color = 1
+						else
+							alternating = false
+						end
+					else
+						alternating = false
+					end
+				end
+				if alternating == true then
+					return true
+				end
 			end
 		end
 	end,
@@ -958,7 +1062,7 @@ SMODS.Joker {
 					card.ability.extra.bonus = 'Black'
 					return {
 						mult = card.ability.extra.mult
-                    }
+					}
 				end
 			else
 				if context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs") then
@@ -976,7 +1080,7 @@ SMODS.Joker {
 					card.ability.extra.bonus = 'Red'
 					return {
 						chips = card.ability.extra.chips
-                    }
+					}
 				end
 			end
 		end
@@ -985,15 +1089,21 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'future_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Future Lyn',
 		text = {
 			"Retrigger all cards in {C:attention}poker",
 			"{C:attention}hands{} that have already",
 			"been played this round"
+		},
+		unlock = {
+			"Redeem",
+			"Petroglyph"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1005,30 +1115,41 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 3, y = 3},
 	cost = 5,
-    calculate = function(self, card, context)
-        if
+	check_for_unlock = function(self, args)
+		if args.type == "future_lyn_petroglyph_redeemed" then
+			return true
+		end
+	end,
+	calculate = function(self, card, context)
+		if
 			context.repetition and
 			context.cardarea == G.play and 
 			G.GAME.hands[context.scoring_name] and
 			G.GAME.hands[context.scoring_name].played_this_round > 1
 		then
-            return {
-                repetitions = card.ability.extra.repetitions
-            }
-        end
-    end,
+			return {
+				repetitions = card.ability.extra.repetitions
+			}
+		end
+	end,
 }
 
 SMODS.Joker {
 	key = 'cloud_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Cloud Lyn',
 		text = {
 			"Earn {C:money}$#1#{} per empty {C:attention}Joker",
 			"slot at end of round"
+		},
+		unlock = {
+			"Reach Ante level {C:attention}3{}",
+			"with no {C:attention}Jokers{}"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1040,24 +1161,37 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 4, y = 3},
 	cost = 4,
-    calc_dollar_bonus = function(self, card)
+	check_for_unlock = function(self, args)
+		if args.type == "ante_up" then
+			if args.ante >= 3 and #G.jokers.cards == 0 then
+				return true
+			end
+		end
+	end,
+	calc_dollar_bonus = function(self, card)
 		local empty = (G.jokers.config.card_limit - #G.jokers.cards)
 		if empty > 0 then
 			return (card.ability.extra.money * empty)
 		end
-    end
+	end
 }
 
 SMODS.Joker {
 	key = 'merla',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Knight Lyn',
 		text = {
 			"{C:mult}+#1#{} Mult for each level",
 			"of played hand {C:attention}above #2#"
+		},
+		unlock = {
+			"Reach {C:mult}+30{} Mult",
+			"with {C:attention}MD-17801{}"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1069,6 +1203,11 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 0, y = 4},
 	cost = 5,
+	check_for_unlock = function(self, args)
+		if args.type == "merla_MD_mult_reached" then
+			return true
+		end
+	end,
 	calculate = function(self, card, context)
 		if
 			context.joker_main
@@ -1084,7 +1223,8 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'wax_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Wax Lyn',
 		text = {
@@ -1092,8 +1232,13 @@ SMODS.Joker {
 			"become {C:attention}Wild{} cards",
 			"and gain a random",
 			"{C:attention}seal{} when scored"
+		},
+		unlock = {
+			"Reach {C:mult}+35{} Mult",
+			"with {C:attention}Seal Lyn{}"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = false,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1105,46 +1250,58 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 1, y = 4},
 	cost = 7,
+	check_for_unlock = function(self, args)
+		if args.type == "wax_lyn_seal_lyn_mult_reached" then
+			return true
+		end
+	end,
 	calculate = function(self, card, context)
 		if context.before and context.main_eval and not context.blueprint then
-            local faces = 0
-            for k, v in ipairs(context.scoring_hand) do
-                if v:is_face() then
-                    faces = faces + 1
-                    v:set_ability('m_wild', nil, true)
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            v:juice_up()
-                            return true
-                        end
-                    }))
+			local faces = 0
+			for k, v in ipairs(context.scoring_hand) do
+				if v:is_face() then
+					faces = faces + 1
+					v:set_ability('m_wild', nil, true)
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							v:juice_up()
+							return true
+						end
+					}))
 					if v.seal == nil then
 						local random_seal = SMODS.poll_seal {key = "lynverse", guaranteed = true}
 						v:set_seal(random_seal)
 					end
-                end
-            end
-            if faces > 0 then
-                return {
-                    message = "Wild",
-                    colour = G.C.FILTER
-                }
-            end
-        end
+				end
+			end
+			if faces > 0 then
+				return {
+					message = "Wild",
+					colour = G.C.FILTER
+				}
+			end
+		end
 	end
 }
 
 SMODS.Joker {
 	key = 'scientist_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Scientist Lyn',
 		text = {
 			"When {C:attention}Blind{} is selected,",
 			"create a random {C:attention}Lyn",
 			"{C:inactive}(Must have room)"
+		},
+		unlock = {
+			"Have at least",
+			"{C:attention}3 Lyn Jokers{} at",
+			"the same time"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1156,19 +1313,32 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 2, y = 4},
 	cost = 5,
+	check_for_unlock = function(self, args)
+		if args.type == 'modify_jokers' then
+			local count = 0
+			for k, v in pairs(G.jokers.cards) do
+				if v:has_attribute('Lyn') then
+					count = count + 1
+				end
+			end
+			if count >= 3 then
+				return true
+			end
+		end
+	end,
 	calculate = function(self, card, context)
 		if context.setting_blind and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
 			G.GAME.joker_buffer = G.GAME.joker_buffer + 1
 			G.E_MANAGER:add_event(Event({
-                func = function()
+				func = function()
 					SMODS.add_card {
 						set = 'lynverse_Lyns',
 						key_append = 'scientist'
 					}
 					G.GAME.joker_buffer = 0
-                    return true
-                end
-            }))
+					return true
+				end
+			}))
 			return {
 				message = "Zap!"
 			}
@@ -1178,7 +1348,8 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'goth_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Goth Lyn',
 		text = {
@@ -1186,8 +1357,13 @@ SMODS.Joker {
 			"every {C:attention}#1# {C:tarot}Tarot{} cards played",
 			"{C:inactive}(Must have room)",
 			"{C:attention}#2# {C:inactive}remaining"
+		},
+		unlock = {
+			"Open {C:attention}3{} {C:spectral}Spectral{}",
+			"packs in one run"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1199,6 +1375,11 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 3, y = 4},
 	cost = 6,
+	check_for_unlock = function(self, args)
+		if args.type == 'goth_lyn_spectral_packs_opened' and args.count >= 3 then
+			return true
+		end
+	end,
 	calculate = function(self, card, context)
 		if context.using_consumeable and context.consumeable.ability.set == "Tarot" then 
 			if not context.blueprint then
@@ -1230,7 +1411,8 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'shark_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Shark Lyn',
 		text = {
@@ -1238,8 +1420,13 @@ SMODS.Joker {
 			"of any discarded card",
 			"ranked {C:attention}2{}, {C:attention}3{}, {C:attention}4{}, or {C:attention}5",
 			"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
+		},
+		unlock = {
+			"Create a {C:planet}Planet{}",
+			"card via {C:attention}Goblyn{}"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = true,
@@ -1251,6 +1438,11 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 4, y = 4},
 	cost = 6,
+	check_for_unlock = function(self, args)
+		if args.type == 'shark_lyn_goblyn_create_planet' then
+			return true
+		end
+	end,
 	calculate = function(self, card, context)
 		if
 			context.discard and
@@ -1261,7 +1453,7 @@ SMODS.Joker {
 			card.ability.extra.chips = card.ability.extra.chips + context.other_card:get_id()
 			return {
 				message = localize('k_upgrade_ex'),
-                colour = G.C.CHIPS,
+				colour = G.C.CHIPS,
 			}
 		end
 		if
@@ -1273,10 +1465,11 @@ SMODS.Joker {
 		end
 	end
 }
-
+--[[
 SMODS.Joker {
 	key = 'dryad_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Dryad Lyn',
 		text = {
@@ -1286,6 +1479,7 @@ SMODS.Joker {
 			"{C:inactive}(Currently {C:mult}+#1# {C:inactive}Mult)"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = false,
 	eternal_compat = true,
@@ -1305,7 +1499,7 @@ SMODS.Joker {
 			card.ability.extra.mult = card.ability.extra.mult + (G.GAME.round_resets.ante * card.ability.extra.multiplier)
 			return {
 				message = localize('k_upgrade_ex'),
-                colour = G.C.CHIPS,
+				colour = G.C.CHIPS,
 			}
 		end
 		if
@@ -1317,18 +1511,85 @@ SMODS.Joker {
 		end
 	end
 }
+--]]
+
+SMODS.Joker {
+	key = 'dream_lyn',
+	discovered = false,
+	unlocked = false,
+	loc_txt = {
+		name = 'Dream Lyn',
+		text = {
+			"{X:mult,C:white} X#1# {} Mult for every",
+			"{C:tarot}Tarot{} card held",
+			"{C:attention}+#2#{} consumable slots",
+		},
+		unlock = {
+			"Use {C:tarot}The Fool{}",
+			"{C:attention}3{} times",
+			"in one run"
+		}
+	},
+	attributes = {'Lyn'},
+	blueprint_compat = true,
+	perishable_compat = false,
+	eternal_compat = true,
+	config = { extra = { xmult_per = 0.65, slots = 2 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmult_per, card.ability.extra.slots } }
+	end,
+	rarity = 2,
+	atlas = 'LynverseJokers',
+	pos = { x = 0, y = 5},
+	cost = 6,
+	check_for_unlock = function(self, args)
+		if args.type == 'dream_lyn_fools_used' and args.count >= 3 then
+			return true
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.extra.slots
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.extra.slots
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			if G.consumeables.config.card_count > 0 then
+				local tarots = 0
+				for k, v in ipairs(G.consumeables.cards) do
+					if v.ability.set == 'Tarot' then
+						tarots = tarots + 1
+					end
+				end
+				if tarots > 0 then
+					return {
+						xmult = 1 + (card.ability.extra.xmult_per * tarots)
+					}
+				end
+			end
+		end
+	end
+}
 
 SMODS.Joker {
 	key = 'selensi_beach',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Selensi Beach',
 		text = {
 			"Booster Packs",
 			"gain {C:attention}+#1#{} choice",
 			"and {C:attention}+#2#{} size",
+		},
+		unlock = {
+			"Open {C:attention}20{}",
+			"booster packs",
+			"in one run"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1340,31 +1601,43 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 1, y = 5},
 	cost = 4,
-    add_to_deck = function(self, card, from_debuff)
+	check_for_unlock = function(self, args)
+		if args.type == 'selensi_beach_packs_opened' and args.count >= 20 then
+			return true
+		end
+	end,
+	add_to_deck = function(self, card, from_debuff)
 		G.GAME.modifiers.booster_choice_mod =  (G.GAME.modifiers.booster_choice_mod or 0) + card.ability.extra.bonus_choice
-        G.GAME.modifiers.booster_size_mod = (G.GAME.modifiers.booster_size_mod or 0) + card.ability.extra.bonus_size
-    end,
-    remove_from_deck = function(self, card, from_debuff)
+		G.GAME.modifiers.booster_size_mod = (G.GAME.modifiers.booster_size_mod or 0) + card.ability.extra.bonus_size
+	end,
+	remove_from_deck = function(self, card, from_debuff)
 		if G.GAME.modifiers.booster_choice_mod ~= nil then
 			G.GAME.modifiers.booster_choice_mod = G.GAME.modifiers.booster_choice_mod - card.ability.extra.bonus_choice
 		end
 		if G.GAME.modifiers.booster_size_mod ~= nil then
 			G.GAME.modifiers.booster_size_mod = G.GAME.modifiers.booster_size_mod - card.ability.extra.bonus_size
 		end
-    end
+	end
 }
 
 SMODS.Joker {
 	key = 'dj_lyn',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'DJ Lyn',
 		text = {
 			"All {C:attention}Jokers{} give",
 			"{X:mult,C:white} X#1# {} Mult",
 			"{C:inactive}(Changes the music)"
+		},
+		unlock = {
+			"Have {C:attention}Beat Lyn",
+			"and {C:attention}Future Lyn",
+			"at the same time"
 		}
 	},
+	attributes = {'Lyn'},
 	blueprint_compat = true,
 	perishable_compat = true,
 	eternal_compat = true,
@@ -1376,27 +1649,39 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 2, y = 5},
 	cost = 6,
+	check_for_unlock = function(self, args)
+		if args.type == 'modify_jokers' then
+			local future_lyns = SMODS.find_card("j_lynverse_future_lyn", true)
+			local beatblock_lyns = SMODS.find_card("j_lynverse_beatblock_lyn", true)
+			if #future_lyns > 0 and #beatblock_lyns > 0 then
+				return true
+			end
+		end
+	end,
 	calculate = function(self, card, context)
 		if context.other_joker then
+			
 			local other_joker = context.other_joker
 			G.E_MANAGER:add_event(Event({
-                    func = function()
-                        other_joker:juice_up(0.5, 0.5)
-                        return true
-                    end
-                })) 
-            return {
+					func = function()
+						play_sound("lynverse_dj_lyn_ability", math.random()*0.2 + 0.9, 1.0)
+						other_joker:juice_up(0.5, 0.5)
+						return true
+					end
+				})) 
+			return {
 				--sound = "lynverse_dj_lyn_ability",
 				message_card = other_joker,
 				Xmult = card.ability.extra.xmult,
-            }
+			}
 		end
 	end
 }
 
 SMODS.Joker {
 	key = 'finley',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Finley',
 		text = {
@@ -1404,6 +1689,11 @@ SMODS.Joker {
 			"{C:hearts}Hearts{} card played or",
 			"{C:spades}Spades{} card discarded",
 			"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chips)"
+		},
+		unlock = {
+			"Have {C:attention}Wax Lyn",
+			"and {C:attention}Fire Lyn",
+			"at the same time"
 		}
 	},
 	blueprint_compat = true,
@@ -1417,6 +1707,15 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 3, y = 5},
 	cost = 6,
+	check_for_unlock = function(self, args)
+		if args.type == 'modify_jokers' then
+			local wax_lyns = SMODS.find_card("j_lynverse_wax_lyn", true)
+			local fire_lyns = SMODS.find_card("j_lynverse_fire_lyn", true)
+			if #wax_lyns > 0 and #fire_lyns > 0 then
+				return true
+			end
+		end
+	end,
 	calculate = function(self, card, context)
 		if
 			context.discard and
@@ -1426,7 +1725,7 @@ SMODS.Joker {
 			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.add
 			return {
 				message = localize('k_upgrade_ex'),
-                colour = G.C.CHIPS,
+				colour = G.C.CHIPS,
 			}
 		end
 		if
@@ -1439,7 +1738,7 @@ SMODS.Joker {
 			return {
 				message = localize('k_upgrade_ex'),
 				message_card = card,
-                colour = G.C.CHIPS,
+				colour = G.C.CHIPS,
 			}
 		end
 		if
@@ -1454,7 +1753,8 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'neotiyeth',
-	discovered = true,
+	discovered = false,
+	unlocked = false,
 	loc_txt = {
 		name = 'Neotiyeth',
 		text = {
@@ -1462,6 +1762,10 @@ SMODS.Joker {
 			"played this hand, and",
 			"{C:attention}Queens{} are {C:attention}revived{}",
 			"when destroyed",
+		},
+		unlock = {
+			"{C:red}Destroy{} a",
+			"{C:attention}Queen of Hearts"
 		}
 	},
 	blueprint_compat = true,
@@ -1475,6 +1779,13 @@ SMODS.Joker {
 	atlas = 'LynverseJokers',
 	pos = { x = 4, y = 5},
 	cost = 7,
+	check_for_unlock = function(self, args)
+		if args.type == 'neotiyeth_card_destroyed' then
+			if args.destroyed_card:get_id() == 12 and args.destroyed_card:is_suit('Hearts') then
+				return true
+			end
+		end
+	end,
 	calculate = function(self, card, context)
 		if context.remove_playing_cards and not context.blueprint then
 			local queens = 0
