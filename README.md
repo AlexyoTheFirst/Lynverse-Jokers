@@ -6,10 +6,10 @@
 
 To install this mod, make sure you have:
 [Lovely Injector](https://github.com/ethangreen-dev/lovely-injector?tab=readme-ov-file#manual-installation)
-[Steamodded](https://github.com/Steamodded/smods/wiki)
-(This mod is certified compatible with release 1.0.0-beta-0711a!)
+[Steamodded](https://github.com/Steamodded/smods)
+(This mod is certified compatible with release v26.1002.0!)
 
-Then placed the (unzipped) folder in \AppData\Roaming\Balatro\Mods\
+Then unzip the folder and place it in \AppData\Roaming\Balatro\Mods\
 (To reach AppData\Roaming\, press "win + R" and enter "%appdata%" without the quotation marks.)
 
 
