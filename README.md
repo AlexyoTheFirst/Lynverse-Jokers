@@ -5,7 +5,7 @@
 --- Installation ---
 
 To install this mod, make sure you have:
-[Lovely Injector](https://github.com/ethangreen-dev/lovely-injector?tab=readme-ov-file#manual-installation)
+[Lovely Injector](https://github.com/ethangreen-dev/lovely-injector?tab=readme-ov-file#manual-installation) &
 [Steamodded](https://github.com/Steamodded/smods)
 (This mod is certified compatible with release v26.1002.0!)
 
