@@ -61,7 +61,7 @@ SMODS.Sound({
 
 SMODS.Joker {
 	key = 'holly',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Holly Valentine',
 		text = {
@@ -123,7 +123,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'faith',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Faith',
 		text = {
@@ -173,7 +173,7 @@ SMODS.Joker {
 }
 SMODS.Joker {
 	key = 'md-17801',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'MD-17801',
 		text = {
@@ -191,7 +191,7 @@ SMODS.Joker {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.bonus_jkr, card.ability.extra.bonus_cnsm, card.ability.extra.curr_mult } }
 	end,
-	rarity = 1,
+	rarity = 3,
 	atlas = 'LynverseJokers',
 	pos = { x = 2, y = 0 },
 	cost = 6,
@@ -202,7 +202,7 @@ SMODS.Joker {
 		then
 			if context.card.area == G.jokers then
 				card.ability.extra.curr_mult = card.ability.extra.curr_mult + card.ability.extra.bonus_jkr
-				if card.ability.extra.curr_mult >= 30 then
+				if card.ability.extra.curr_mult >= 21 then
 					check_for_unlock({ type = 'merla_MD_mult_reached' })
 				end
 				return {
@@ -211,7 +211,7 @@ SMODS.Joker {
 				}
 			elseif context.card.area == G.consumeables then
 				card.ability.extra.curr_mult = card.ability.extra.curr_mult + card.ability.extra.bonus_cnsm
-				if card.ability.extra.curr_mult >= 30 then
+				if card.ability.extra.curr_mult >= 21 then
 					check_for_unlock({ type = 'merla_MD_mult_reached' })
 				end
 				return {
@@ -232,7 +232,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'fire_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Fire Lyn',
 		text = {
@@ -297,7 +297,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'brick_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Brick Lyn',
 		text = {
@@ -345,7 +345,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'graffiti_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Graffiti Lyn',
 		text = {
@@ -385,7 +385,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'robo_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Robo-Lyn',
 		text = {
@@ -456,7 +456,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'mermaid_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Mermaid Lyn',
 		text = {
@@ -490,7 +490,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'goblyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Goblyn',
 		text = {
@@ -555,7 +555,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'cat_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Cat Lyn',
 		text = {
@@ -623,7 +623,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'seal_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Seal Lyn',
 		text = {
@@ -670,7 +670,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'adventurer_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Adventurer Lyn',
 		text = {
@@ -713,7 +713,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'inklyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Inklyn',
 		text = {
@@ -766,7 +766,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'badgirl_lyn',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Bad Girl Lyn',
 		text = {
@@ -808,7 +808,7 @@ SMODS.Joker {
 
 SMODS.Joker {
 	key = 'winnie',
-	discovered = true,
+	discovered = false,
 	loc_txt = {
 		name = 'Winnie',
 		text = {
@@ -1145,7 +1145,7 @@ SMODS.Joker {
 			"slot at end of round"
 		},
 		unlock = {
-			"Reach Ante level {C:attention}3{}",
+			"Reach Ante level {C:attention}2{}",
 			"with no {C:attention}Jokers{}"
 		}
 	},
@@ -1163,7 +1163,7 @@ SMODS.Joker {
 	cost = 4,
 	check_for_unlock = function(self, args)
 		if args.type == "ante_up" then
-			if args.ante >= 3 and #G.jokers.cards == 0 then
+			if args.ante >= 2 and #G.jokers.cards == 0 then
 				return true
 			end
 		end
@@ -1187,7 +1187,7 @@ SMODS.Joker {
 			"of played hand {C:attention}above #2#"
 		},
 		unlock = {
-			"Reach {C:mult}+30{} Mult",
+			"Reach {C:mult}+21{} Mult",
 			"with {C:attention}MD-17801{}"
 		}
 	},
